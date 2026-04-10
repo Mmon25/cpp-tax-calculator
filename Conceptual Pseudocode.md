@@ -6,15 +6,15 @@ STATE TAX FUNCTION (Conceptual Pseudocode)
 //double stateTaxOwed;
 
 //switch(state)
-  //case: CA
+  //case: stateName
         //if income <= X...
         //else if income <= Y...
         //return stateTaxOwed;
 
-//case: TX
+//case: stateName
       //return 0;
 
-//case: CO
+//case: stateName
       //if income <= X...
       //else if income <= Y...
       //return stateTaxOwed;
@@ -30,11 +30,15 @@ FED TAX FUNCTION (Conceptual Pseudocode)
 ```
 //fedTaxFunc(status, income)
 //double fedTaxOwed;
+
 //switch(status):
   //case: married
     //if income <= X...
     //else if income <= Y...
     //return fedTaxOwed;
+
+  //case: single
+...
 ```
 
 
@@ -46,6 +50,7 @@ CITY TAX FUNCTION (Conceptual Pseudocode)
 ```
 //cityTaxFunc(city, income)
 //double cityTaxOwed;
+
 //switch(city)
   //case: cityName
       //cityTax = income * city tax rate
