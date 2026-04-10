@@ -1,1 +1,0 @@
-# Group 10 - Tax Calculator
