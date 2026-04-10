@@ -1,9 +1,9 @@
 # Data Required
                 
 
-- Single filer fed bracket ranges AND rates
-- Married filer fed bracket ranges AND rates
-- Flat tax rate for each state
+- Single filer federal tax bracket ranges AND rates
+- Married filer federal tax bracket ranges AND rates
+- Flat tax rate for each state for state tax
 - Additional city tax if applicable
 
 
