@@ -59,7 +59,7 @@ State 3:
 
 
 
-City Tax Rates
+City Tax Rates (If Applicable)
 -
 ```
 City 1:
