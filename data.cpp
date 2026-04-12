@@ -2,186 +2,429 @@
 #include <vector>
 #include <utility>
 
-std::vector<std::pair<string,string>> states = {
-  {"Alabama", "AL"},
-  {"Alaska", "AK"},
-  {"Arizona", "AZ"},
-  {"Arkansas", "AR"},
-  {"California", "CA"},
-  {"Colorado", "CO"},
-  {"Connecticut", "CT"},
-  {"Delaware", "DE"},
-  {"Florida", "FL"},
-  {"Georgia", "GA"},
-  {"Hawaii", "HI"},
-  {"Idaho", "ID"},
-  {"Illinois", "IL"},
-  {"Indiana", "IN"},
-  {"Iowa", "IA"},
-  {"Kansas", "KS"},
-  {"Kentucky", "KY"},
-  {"Louisiana", "LA"},
-  {"Maine", "ME"},
-  {"Maryland", "MD"},
-  {"Massachusetts", "MA"},
-  {"Michigan", "MI"},
-  {"Minnesota", "MN"},
-  {"Mississippi", "MS"},
-  {"Missouri", "MO"},
-  {"Montana", "MT"},
-  {"Nebraska", "NE"},
-  {"Nevada", "NV"},
-  {"New Hampshire", "NH"},
-  {"New Jersey", "NJ"},
-  {"New Mexico", "NM"},
-  {"New York", "NY"},
-  {"North Carolina", "NC"},
-  {"North Dakota", "ND"},
-  {"Ohio", "OH"},
-  {"Oklahoma", "OK"},
-  {"Oregon", "OR"},
-  {"Pennsylvania", "PA"},
-  {"Rhode Island", "RI"},
-  {"South Carolina", "SC"},
-  {"South Dakota", "SD"},
-  {"Tennessee", "TN"},
-  {"Texas", "TX"},
-  {"Utah", "UT"},
-  {"Vermont", "VT"},
-  {"Virginia", "VA"},
-  {"Washington D.C.", "DC"},
-  {"Washington", "WA"},
-  {"West Virginia", "WV"},
-  {"Wisconsin", "WI"},
-  {"Wyoming", "WY"}
+using namespace std;
+
+struct TaxBracket {
+  int threshold;
+  double rate;
 };
 
-
-
-
-              /*==============================
-                      STATE TAX RATES
-                     {income top, rate}
-              ==============================*/
-
-// AL - Alabama
-std::vector<std::vector<std::pair<double, double>>> AL = {
-  { // Index 0: Single
-    {500, .02}, {2500, .04}, {3000, .05},
-  },
-  { // Index 1: Married Filing Jointly
-    {1000, .02}, {5000, .04}, {6000, .05}, // Thresholds are doubled for MFJ
-  }
+struct FilingStatus {
+  string status;
+  vector<TaxBracket> brackets;
 };
 
-// AK - Alaska
-std::vector<std::vector<std::pair<double, double>>> AK = {
-  { // Index 0: Single
-    {0, .00}, // Alaska has no state income tax
-  },
-  { // Index 1: Married Filing Jointly
-    {0, .00},
-  }
+struct StateTaxRate {
+  string state;
+  vector<FilingStatus> filingTypes;
 };
 
-// AZ - Arizona
-std::vector<std::vector<std::pair<double, double>>> AZ = {
-  { // Index 0: Single
-    {0, .025}, // Arizona uses a flat tax of 2.5%
+vector<StateTaxRate> StateTaxRates = { 
+  {
+    "Alabama", 
+    {
+      {"Single", {{500, .02}, {2500, .04}, {3000, .05}}},
+      {"Married", {{1000, .02}, {5000, .04}, {6000, .05}}}
+    },
   },
-  { // Index 1: Married Filing Jointly
-    {0, .025},
-  }
-}
-
-// AR - Arkansas
-std::vector<std::vector<std::pair<double, double>>> AR = {
-  { // Index 0: Single
-    {5000, .00}, {10000, .02}, {14700, .03}, {87000, .044}
+  {
+    "Alaska", 
+    {
+      {"Single", {{0, .00}}},
+      {"Married", {{0, .00}}}
+    },
   },
-  { // Index 1: Married Filing Jointly
-    {10000, .00}, {20000, .02}, {29400, .03}, {174000, .044}
-  }
+  {
+    "Arizona", 
+    {
+      {"Single", {{0, .025}}},
+      {"Married", {{0, .025}}}
+    },
+  },
+  {
+    "Arkansas", 
+    {
+      {"Single", {{0, .02}, {4700, .039}}},
+      {"Married", {{0, .02}, {4700, .039}}}
+    }
+  },
+  {
+    "California", 
+    {
+      { "Single", 
+        {{11079, .01}, {26264, .02}, {41452, .04}, {57542, .06}, {72724, .08}, {371479, .093}, {445771, .103}, {742953, .113}, {1000000, .123}}
+      },
+      { "Married", 
+        {{22158, .01}, {52528, .02}, {82904, .04}, {115084, .06}, {145448, .08}, {742958, .093}, {891542, .103}, {1485906, .113}, {2000000, .123}}
+      }
+    }
+  },
+  {
+    "Colorado", 
+    {
+      {"Single", {{0, .044}}},
+      {"Married", {{0, .044}}}
+    },
+  },
+  {
+    "Connecticut", 
+    {
+      {"Single", {{0, .02}, {10000, .045}, {50000, .055}, {100000, .06}, {200000, .065}, {250000, .069}, {500000, .0699}}},
+      {"Married", {{0, .02}, {20000, .045}, {100000, .055}, {200000, .06}, {400000, .065}, {500000, .069}, {1000000, .0699}}}
+    },
+  },
+  {
+    "Delaware", 
+    {
+      {"Single", {{0, .00}, {2000, .021}, {5000, .038}, {10000, .047}, {20000, .051}, {25000, .0545}, {60000, .066}, {150000, .0675}, {250000, .0685}, {500000, .0695}}},
+      {"Married", {{0, .00}, {2000, .021}, {5000, .038}, {10000, .047}, {20000, .051}, {25000, .0545}, {60000, .066}, {150000, .0675}, {250000, .0685}, {500000, .0695}}}
+    },
+  },
+  {
+    "Florida", 
+    {
+      {"Single", {{0, .00}}},
+      {"Married", {{0, .00}}}
+    },
+  },
+  {
+    "Georgia", 
+    {
+      {"Single", {{0, .0499}}},
+      {"Married", {{0, .0499}}}
+    },
+  },
+  {
+    "Hawaii", 
+    {
+      {"Single", {{0, .014}, {2400, .032}, {4800, .055}, {9600, .064}, {14400, .068}, {19200, .072}, {24000, .076}, {36000, .079}, {48000, .0825}, {150000, .09}, {175000, .10}, {200000, .11}}},
+      {"Married", {{0, .014}, {4800, .032}, {9600, .055}, {19200, .064}, {28800, .068}, {38400, .072}, {48000, .076}, {72000, .079}, {96000, .0825}, {300000, .09}, {350000, .10}, {400000, .11}}}
+    },
+  },
+  {
+    "Idaho", 
+    {
+      {"Single", {{0, .053}}},
+      {"Married", {{0, .053}}}
+    },
+  },
+  {
+    "Illinois", 
+    {
+      {"Single", {{0, .0495}}},
+      {"Married", {{0, .0495}}}
+    },
+  },
+  {
+    "Indiana", 
+    {
+      {"Single", {{0, .0295}}},
+      {"Married", {{0, .0295}}}
+    },
+  },
+  {
+    "Iowa", 
+    {
+      {"Single", {{0, .038}}},
+      {"Married", {{0, .038}}}
+    },
+  },
+  {
+    "Kansas", 
+    {
+      {"Single", {{0, .052}, {23000, .0558}}},
+      {"Married", {{0, .052}, {46000, .0558}}}
+    },
+  },
+  {
+    "Kentucky", 
+    {
+      {"Single", {{0, .035}}},
+      {"Married", {{0, .035}}}
+    },
+  },
+  {
+    "Louisiana", 
+    {
+      {"Single", {{0, .03}}},
+      {"Married", {{0, .03}}}
+    },
+  },
+  {
+    "Maine", 
+    {
+      {"Single", {{0, .058}, {27400, .0675}, {64850, .0715}}},
+      {"Married", {{0, .058}, {54850, .0675}, {129750, .0715}}}
+    },
+  },
+  {
+    "Maryland", 
+    {
+      {"Single", {{0, .02}, {1000, .03}, {2000, .04}, {3000, .0475}, {100000, .05}, {125000, .0525}, {150000, .055}, {250000, .0575}, {500000, .0625}, {1000000, .065}}},
+      {"Married", {{0, .02}, {1000, .03}, {2000, .04}, {3000, .0475}, {150000, .05}, {175000, .0525}, {225000, .055}, {300000, .0575}, {600000, .0625}, {1200000, .065}}}
+    },
+  },
+  {
+    "Massachusetts", 
+    {
+      {"Single", {{0, .05}, {1083150, .09}}},
+      {"Married", {{0, .05}, {1083150, .09}}}
+    },
+  },
+  {
+    "Michigan", 
+    {
+      {"Single", {{0, .0425}}},
+      {"Married", {{0, .0425}}}
+    },
+  },
+  {
+    "Minnesota", 
+    {
+      {"Single", {{0, .0535}, {32570, .068}, {106990, .0785}, {198630, .0985}}},
+      {"Married", {{0, .0535}, {47620, .068}, {189180, .0785}, {330410, .0985}}}
+    },
+  },
+  {
+    "Mississippi", 
+    {
+      {"Single", {{0, .00}, {10000, .044}}},
+      {"Married", {{0, .00}, {10000, .044}}}
+    },
+  },
+  {
+    "Missouri", 
+    {
+      {"Single", {{0, .00}, {1313, .02}, {2626, .025}, {3939, .03}, {5252, .035}, {6565, .04}, {7878, .045}, {9191, .047}}},
+      {"Married", {{0, .00}, {1313, .02}, {2626, .025}, {3939, .03}, {5252, .035}, {6565, .04}, {7878, .045}, {9191, .047}}}
+    },
+  },
+  {
+    "Montana", 
+    {
+      {"Single", {{0, .047}, {21100, .059}}},
+      {"Married", {{0, .047}, {42200, .059}}}
+    },
+  },
+  {
+    "Nebraska", 
+    {
+      {"Single", {{0, .0246}, {3500, .0351}, {22000, .0501}, {35000, .052}}},
+      {"Married", {{0, .0246}, {7000, .0351}, {44000, .0501}, {70000, .052}}}
+    },
+  },
+  {
+    "Nevada", 
+    {
+      {"Single", {{0, .00}}},
+      {"Married", {{0, .00}}}
+    },
+  },
+  {
+    "New Hampshire", 
+    {
+      {"Single", {{0, .00}}},
+      {"Married", {{0, .00}}}
+    },
+  },
+  {
+    "New Jersey", 
+    {
+      {"Single", {{0, .014}, {20000, .0175}, {35000, .035}, {40000, .05525}, {75000, .0637}, {400000, .0897}, {1000000, .1075}}},
+      {"Married", {{0, .014}, {20000, .0175}, {50000, .0245}, {70000, .035}, {80000, .05525}, {150000, .0637}, {400000, .0897}, {1000000, .1075}}}
+    },
+  },
+  {
+    "New Mexico", 
+    {
+      {"Single", {{0, .017}, {5500, .032}, {11000, .047}, {16000, .049}, {210000, .059}}},
+      {"Married", {{0, .017}, {8000, .032}, {16000, .047}, {24000, .049}, {315000, .059}}}
+    },
+  },
+  {
+    "New York", 
+    {
+      {"Single", {{0, .04}, {8500, .045}, {11700, .0525}, {13900, .0585}, {21400, .0625}, {80650, .0685}, {215400, .0965}, {1077550, .103}, {5000000, .109}, {25000000, .114}}},
+      {"Married", {{0, .04}, {17150, .045}, {23600, .0525}, {27900, .0585}, {43000, .0625}, {161550, .0685}, {323200, .0965}, {2155350, .103}, {5000000, .109}, {25000000, .114}}}
+    },
+  },
+  {
+    "North Carolina", 
+    {
+      {"Single", {{0, .0399}}},
+      {"Married", {{0, .0399}}}
+    },
+  },
+  {
+    "North Dakota", 
+    {
+      {"Single", {{0, .00}, {48475, .0195}, {244825, .025}}},
+      {"Married", {{0, .00}, {80975, .0195}, {298075, .025}}}
+    },
+  },
+  {
+    "Ohio", 
+    {
+      {"Single", {{0, .00}, {26050, .0275}, {100000, .03125}}},
+      {"Married", {{0, .00}, {26050, .0275}, {100000, .03125}}}
+    },
+  },
+  {
+    "Oklahoma", 
+    {
+      {"Single", {{0, .0025}, {1000, .0075}, {2500, .0175}, {3750, .0275}, {4900, .0375}, {7200, .0475}}},
+      {"Married", {{0, .0025}, {2000, .0075}, {5000, .0175}, {7500, .0275}, {9800, .0375}, {14400, .0475}}}
+    },
+  },
+  {
+    "Oregon", 
+    {
+      {"Single", {{0, .0475}, {4300, .0675}, {10750, .0875}, {125000, .099}}},
+      {"Married", {{0, .0475}, {8600, .0675}, {21500, .0875}, {250000, .099}}}
+    },
+  },
+  {
+    "Pennsylvania", 
+    {
+      {"Single", {{0, .0307}}},
+      {"Married", {{0, .0307}}}
+    },
+  },
+  {
+    "Rhode Island", 
+    {
+      {"Single", {{0, .0375}, {82050, .0475}, {186550, .0599}}},
+      {"Married", {{0, .0375}, {82050, .0475}, {186550, .0599}}}
+    },
+  },
+  {
+    "South Carolina", 
+    {
+      {"Single", {{0, .00}, {3560, .03}, {17830, .06}}},
+      {"Married", {{0, .00}, {3560, .03}, {17830, .06}}}
+    },
+  },
+  {
+    "South Dakota", 
+    {
+      {"Single", {{0, .00}}},
+      {"Married", {{0, .00}}}
+    },
+  },
+  {
+    "Tennessee", 
+    {
+      {"Single", {{0, .00}}},
+      {"Married", {{0, .00}}}
+    },
+  },
+  {
+    "Texas", 
+    {
+      {"Single", {{0, .00}}},
+      {"Married", {{0, .00}}}
+    },
+  },
+  {
+    "Utah", 
+    {
+      {"Single", {{0, .045}}},
+      {"Married", {{0, .045}}}
+    },
+  },
+  {
+    "Vermont", 
+    {
+      {"Single", {{0, .0335}, {47150, .066}, {114150, .076}, {220000, .0875}}},
+      {"Married", {{0, .0335}, {78750, .066}, {190450, .076}, {284600, .0875}}}
+    },
+  },
+  {
+    "Virginia", 
+    {
+      {"Single", {{0, .02}, {3000, .03}, {5000, .05}, {17000, .0575}}},
+      {"Married", {{0, .02}, {3000, .03}, {5000, .05}, {17000, .0575}}}
+    },
+  },
+  {
+    "Washington", 
+    {
+      {"Single", {{0, .00}}},
+      {"Married", {{0, .00}}}
+    },
+  },
+  {
+    "West Virginia", 
+    {
+      {"Single", {{0, .0211}, {10000, .0281}, {25000, .0316}, {40000, .0422}, {60000, .0458}}},
+      {"Married", {{0, .0211}, {10000, .0281}, {25000, .0316}, {40000, .0422}, {60000, .0458}}}
+    },
+  },
+  {
+    "Wisconsin", 
+    {
+      {"Single", {{0, .035}, {14680, .044}, {50480, .053}, {323290, .0765}}},
+      {"Married", {{0, .035}, {19580, .044}, {67300, .053}, {431060, .0765}}}
+    },
+  },
+  {
+    "Wyoming", 
+    {
+      {"Single", {{0, .00}}},
+      {"Married", {{0, .00}}}
+    },
+  },
 };
 
-// CA - California 
-std::vector<std::vector<std::pair<double, double>>> CA = {
-  { // Index 0: Single
-    {10412, .01}, {24684, .02}, {38959, .04}, {54081, .06}, {68350, .08}, {349137, .093}
-  },
-  { // Index 1: Married Filing Jointly
-    {20824, .01}, {49368, .02}, {77918, .04}, {108162, .06}, {136700, .08}, {698274, .093}
-  }
-};
-
-// CO - Colorado
-std::vector<std::vector<std::pair<double, double>>> CO = {
-  { // Index 0: Single
-    {0, .044}
-  },
-  { // Index 1: Married Filing Jointly
-    {0, .044}
-  }
-};
-
-// CT - Connecticut
-std::vector<std::vector<std::pair<double, double>>> CT = {
-  { // Index 0: Single
-    {10000, .02}, {50000, .045}, {100000, .055}, {200000, .06}, {250000, .065}, {500000, .069}, {500001, .0699}
-  },
-  { // Index 1: Married Filing Jointly
-    {20000, .02}, {100000, .045}, {200000, .055}, {400000, .06}, {500000, .065}, {1000000, .069}, {1000001, .0699}
-  }
-};
-
-// DE - Delaware
-std::vector<std::vector<std::pair<double, double>>> DE = {
-  { // Index 0: Single
-    {2000, .00}, {5000, .022}, {10000, .039}, {20000, .048}, {25000, .052}, {60000, .0555}, {60001, .066}
-  },
-  { // Index 1: Married Filing Jointly
-    {2000, .00}, {5000, .022}, {10000, .039}, {20000, .048}, {25000, .052}, {60000, .0555}, {60001, .066}
-  }
-};
-
-// FL - Florida
-std::vector<std::vector<std::pair<double, double>>> FL = {
-  { // Index 0: Single
-    {0, .00}, // Florida has no state income tax
-  },
-  { // Index 1: Married Filing Jointly
-    {0, .00},
-  }
-};
-
-// GA - Georgia
-std::vector<std::vector<std::pair<double, double>>> GA = {
-  { // Index 0: Single
-    {0, .0549}      // Flat 5.49% (scheduled to decrease annually)
-  },
-  { // Index 1: Married Filing Jointly
-    {0, .0549}
-  }
-};
-
-// HI - Hawaii
-std::vector<std::vector<std::pair<double, double>>> HI = {
-  { // Index 0: Single
-    {2400, .014}, {4800, .032}, {9600, .055}, {14400, .064}, {19200, .068}, 
-    {24000, .072}, {36000, .076}, {48000, .079}, {150000, .0825}, {175000, .09}, {200000, .10}, {200001, .11}
-  },
-  { // Index 1: Married Filing Jointly
-    {4800, .014}, {9600, .032}, {19200, .055}, {28800, .064}, {38400, .068}, 
-    {48000, .072}, {72000, .076}, {96000, .079}, {300000, .0825}, {350000, .09}, {400000, .10}, {400001, .11}
-  }
-};
-
-// ID - Idaho
-std::vector<std::vector<std::pair<double, double>>> ID = {
-  { // Index 0: Single
-    {0, .05695}   
-  },
-  { // Index 1: Married Filing Jointly
-    {0, .05695}
-  }
+vector<string> States = {
+  "Alabama",
+  "Alaska",
+  "Arizona",
+  "Arkansas",
+  "California",
+  "Colorado",
+  "Connecticut",
+  "Delaware",
+  "Florida",
+  "Georgia",
+  "Hawaii",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Mississippi",
+  "Missouri",
+  "Montana",
+  "Nebraska",
+  "Nevada",
+  "New Hampshire",
+  "New Jersey",
+  "New Mexico",
+  "New York",
+  "North Carolina",
+  "North Dakota",
+  "Ohio",
+  "Oklahoma",
+  "Oregon",
+  "Pennsylvania",
+  "Rhode Island",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Vermont",
+  "Virginia",
+  "Washington",
+  "West Virginia",
+  "Wisconsin",
+  "Wyoming"
 };
