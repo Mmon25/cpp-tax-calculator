@@ -19,6 +19,18 @@ struct StateTaxRate {
   vector<FilingStatus> filingTypes;
 };
 
+
+vector<FilingStatus> FederalTaxRates = {
+  {
+    "Single",
+    {{0, .10}, {11926, .12}, {48475, .22}, {103351, .24}, {197301, .32}, {250526, .35}, {626351, .37}}
+  },
+  {
+    "Married",
+    {{0, .10}, {23850, .12}, {96950, .22}, {206700, .24}, {394600, .32}, {501505, .35}, {751600, .37}}
+  }
+}
+
 vector<StateTaxRate> StateTaxRates = { 
   {
     "Alabama", 
