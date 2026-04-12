@@ -34,3 +34,9 @@ Matthew created documentation files for project structure and logic:
     - Conceptual Pseudocode.md:
       Contains system logic, design, flow, and conceptual pseudocode outlining overall design and functionality
 ```
+
+April 11
+-
+```
+Aaron collected data and created "data.cpp" consisting of data required for program to utilize
+```
