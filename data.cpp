@@ -2,7 +2,7 @@
 #include <vector>
 #include <utility>
 
-std::vector<std::string> states = {
+std::vector<std::pair<string,string>> states = {
   {"Alabama", "AL"},
   {"Alaska", "AK"},
   {"Arizona", "AZ"},
@@ -56,6 +56,13 @@ std::vector<std::string> states = {
   {"Wyoming", "WY"}
 };
 
+
+
+
+              /*==============================
+                      STATE TAX RATES
+                     {income top, rate}
+              ==============================*/
 
 // AL - Alabama
 std::vector<std::vector<std::pair<double, double>>> AL = {
