@@ -29,7 +29,7 @@ vector<FilingStatus> FederalTaxRates = {
     "Married",
     {{0, .10}, {23850, .12}, {96950, .22}, {206700, .24}, {394600, .32}, {501505, .35}, {751600, .37}}
   }
-}
+};
 
 vector<StateTaxRate> StateTaxRates = { 
   {
