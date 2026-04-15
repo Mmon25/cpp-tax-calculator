@@ -40,3 +40,10 @@ April 11
 ```
 Aaron collected data and created "data.cpp" consisting of data required for program to utilize
 ```
+April 15
+-
+```
+Matthew updated tax-calculator.cpp providing structure and system to perform all tasks and calculations necessary for program to run as intended
+
+Malik to implement: Prompts for Input, Input validation, Formatting & Design, Output display
+```
