@@ -45,5 +45,5 @@ April 15
 ```
 Matthew updated tax-calculator.cpp providing structure and system to perform all tasks and calculations necessary for program to run as intended
 
-Malik to implement: Prompts for Input, Input validation, Formatting & Design, Output display
+Malik implemented Prompts for Input, Input validation, Formatting & Design, Output display
 ```

@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <iomanip>
+#include <limits>
 
 using namespace std;
 
@@ -514,6 +516,26 @@ double getStateTax(double income, string stateName, string filingStatus) { // St
 
 
 
+/*===============
+HELPER FUNCTIONS
+===============*/
+string normalizeTitle(string s) { // Capitalizes first letter of each word ("new york" -> "New York")
+    bool capitalize = true;
+    for (int i = 0; i < s.length(); i++) {
+        if (s[i] == ' ') {
+            capitalize = true;
+        } else if (capitalize) {
+            s[i] = toupper(s[i]);
+            capitalize = false;
+        } else {
+            s[i] = tolower(s[i]);
+        }
+    }
+    return s;
+}
+
+
+
 /*===========
 MAIN FUNCTION
 ===========*/
@@ -524,29 +546,60 @@ int main() {
 
     // Get income
     cout << "Income: $";
-    cin >> income;
+    while (!(cin >> income) || income < 0) {
+        cout << "  Invalid input. Please enter a positive number." << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Income: $";
+    }
 
     cin.ignore(); // Clears leftover newline
 
     // Get filing status
     cout << "Filing status (Single/Married): ";
     getline(cin, filingStatus);
+    filingStatus = normalizeTitle(filingStatus);
+    while (filingStatus != "Single" && filingStatus != "Married") {
+        cout << "  Invalid status. Please enter Single or Married." << endl;
+        cout << "Filing status (Single/Married): ";
+        getline(cin, filingStatus);
+        filingStatus = normalizeTitle(filingStatus);
+    }
 
     // Get state
     cout << "State: ";
     getline(cin, state);
+    state = normalizeTitle(state);
+    while (find(States.begin(), States.end(), state) == States.end()) {
+        cout << "  Invalid state. Please enter a valid U.S. state." << endl;
+        cout << "State: ";
+        getline(cin, state);
+        state = normalizeTitle(state);
+    }
 
     // Calculate taxes
     double federal = getFederalTax(income, filingStatus);
     double stateTax = getStateTax(income, state, filingStatus);
 
+    double totalTax = federal + stateTax;
+    double takeHome = income - totalTax;
+
     // Output results
+    cout << fixed << setprecision(2);
     /*------------------------------------------
                     TAX SUMMARY
     ------------------------------------------*/
-    cout << "Federal Tax: $" << federal << endl; // Output Federal Tax owed
-    cout << "State Tax: $" << stateTax << endl; // Output State Tax owed
-    cout << "Total Tax: $" << (federal + stateTax) << endl; // Output Total Taxes owed
+    cout << endl;
+    cout << "------------------------------------------" << endl;
+    cout << "              TAX SUMMARY                 " << endl;
+    cout << "------------------------------------------" << endl;
+    cout << "  Gross Income:       $" << income << endl;
+    cout << "  Federal Tax:        $" << federal << endl; // Output Federal Tax owed
+    cout << "  State Tax:          $" << stateTax << endl; // Output State Tax owed
+    cout << "------------------------------------------" << endl;
+    cout << "  Total Tax:          $" << totalTax << endl; // Output Total Taxes owed
+    cout << "  Take-Home Pay:      $" << takeHome << endl;
+    cout << "------------------------------------------" << endl;
 
     return 0; 
 }
