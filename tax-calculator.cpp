@@ -545,12 +545,12 @@ int main() {
     string state;
 
     // Get income
-    cout << "Please enter your annual gross income: $";
+    cout << "Please enter your gross annual income: $";
     while (!(cin >> income) || income < 0) {
         cout << "  Invalid input. Please enter a positive number." << endl;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Please enter your annual gross income: $";
+        cout << "Please enter your gross annual income: $";
     }
 
     cin.ignore(); // Clears leftover newline
