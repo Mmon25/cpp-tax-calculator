@@ -545,34 +545,34 @@ int main() {
     string state;
 
     // Get income
-    cout << "Income: $";
+    cout << "Please enter your annual gross income: $";
     while (!(cin >> income) || income < 0) {
         cout << "  Invalid input. Please enter a positive number." << endl;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Income: $";
+        cout << "Please enter your annual gross income: $";
     }
 
     cin.ignore(); // Clears leftover newline
 
     // Get filing status
-    cout << "Filing status (Single/Married): ";
+    cout << "Please enter your filing status (Single/Married): ";
     getline(cin, filingStatus);
     filingStatus = normalizeTitle(filingStatus);
     while (filingStatus != "Single" && filingStatus != "Married") {
         cout << "  Invalid status. Please enter Single or Married." << endl;
-        cout << "Filing status (Single/Married): ";
+        cout << "Please enter your filing status (Single/Married): ";
         getline(cin, filingStatus);
         filingStatus = normalizeTitle(filingStatus);
     }
 
     // Get state
-    cout << "State: ";
+    cout << "Please enter your state of residence: ";
     getline(cin, state);
     state = normalizeTitle(state);
     while (find(States.begin(), States.end(), state) == States.end()) {
         cout << "  Invalid state. Please enter a valid U.S. state." << endl;
-        cout << "State: ";
+        cout << "Please enter your state of residence: ";
         getline(cin, state);
         state = normalizeTitle(state);
     }
