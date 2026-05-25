@@ -57,12 +57,12 @@ This project applies several foundational C++ programming concepts, including:
 - Standard Template Library (STL)
 
 Libraries used:
-- <iostream>
-- <vector>
-- <string>
-- <algorithm>
-- <iomanip>
-- <limits>
+- `<iostream>`
+- `<vector>`
+- `<string>`
+- `<algorithm>`
+- `<iomanip>`
+- `<limits>`
 
 ---
 
